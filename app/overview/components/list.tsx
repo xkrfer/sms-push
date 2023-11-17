@@ -111,7 +111,7 @@ export default async function List({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3} className="h-24 text-center">
+                <TableCell colSpan={12} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
