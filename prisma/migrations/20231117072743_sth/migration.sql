@@ -1,0 +1,26 @@
+-- CreateTable
+CREATE TABLE `Log` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `body` VARCHAR(191) NOT NULL,
+    `smsId` INTEGER NOT NULL,
+    `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `LogDetail` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `logId` INTEGER NOT NULL,
+    `botName` VARCHAR(191) NOT NULL,
+    `message` VARCHAR(191) NOT NULL,
+    `status` INTEGER NOT NULL,
+    `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `LogDetail` ADD CONSTRAINT `LogDetail_logId_fkey` FOREIGN KEY (`logId`) REFERENCES `Log`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
