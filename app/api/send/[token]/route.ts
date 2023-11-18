@@ -35,7 +35,7 @@ export async function GET(
     // @ts-ignore
     body[key] = value;
   });
-  pushMessage({
+  await pushMessage({
     sms,
     body,
   });
@@ -70,7 +70,7 @@ export async function POST(
       }
     );
   const body = await request.json();
-  pushMessage({
+  await pushMessage({
     sms,
     body,
   });

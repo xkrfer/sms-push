@@ -39,9 +39,8 @@ export async function pushMessage(data: {
     },
   });
   if (!botList.length) return;
-  sendMessage(botList, body).then((res) => {
-    recordLog(sms, JSON.stringify(body), res.successList, res.errorList);
-  });
+  const res = await sendMessage(botList, body);
+  await recordLog(sms, JSON.stringify(body), res.successList, res.errorList);
 }
 
 function sendMessage(
