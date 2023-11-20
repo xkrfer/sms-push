@@ -73,6 +73,11 @@ export default function List() {
       cell: ({ row }) => <div>{row.getValue("token")}</div>,
     },
     {
+      accessorKey: "rule",
+      header: "Rule",
+      cell: ({ row }) => <div>{row.getValue("rule")}</div>,
+    },
+    {
       accessorKey: "created",
       header: "Created",
       cell: ({ row }) => <div>{row.getValue("created")}</div>,
@@ -89,6 +94,7 @@ export default function List() {
         return (
           <div className="flex items-center space-x-2">
             <EditForm
+              rule={row.getValue("rule")}
               id={row.getValue("id")}
               name={row.getValue("name")}
               Bots={bots}

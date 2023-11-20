@@ -20,10 +20,11 @@ export async function getList() {
       token: true,
       created: true,
       updated: true,
+      rule: true,
     },
   });
   return bots.map((bot) => {
-    const { id, type, name, token, created, updated } = bot;
+    const { id, type, name, token, created, updated, rule } = bot;
     return {
       id,
       type,
@@ -31,6 +32,7 @@ export async function getList() {
       token,
       created: formatDate(created),
       updated: formatDate(updated),
+      rule,
     };
   });
 }
@@ -38,7 +40,7 @@ export async function getList() {
 export async function addSubmit(data: Record<string, any>) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("no login");
-  const { type, name, token, ...rest } = data;
+  const { type, name, token, rule, ...rest } = data;
   const body = JSON.stringify(rest);
   // 判断是否已经存在
   const bot = await prisma.bot.findFirst({
@@ -55,6 +57,7 @@ export async function addSubmit(data: Record<string, any>) {
       token,
       body,
       userId: session.user.id,
+      rule: rule || "",
     },
   });
 }
@@ -87,13 +90,14 @@ export async function getBotById(id: number) {
     },
   });
   if (!bot) throw new Error("bot not found");
-  const { type, name, token, body } = bot;
+  const { type, name, token, body, rule } = bot;
   return {
     id,
     type,
     name,
     token,
     body: JSON.parse(body),
+    rule,
   };
 }
 
@@ -103,10 +107,11 @@ export async function updateSubmit(data: {
   name: string;
   token: string;
   body: Record<string, any>;
+  rule?: string;
 }) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("no login");
-  const { id, type, name, token, body } = data;
+  const { id, type, name, token, body, rule = "" } = data;
   const bot = await prisma.bot.findUnique({
     where: {
       id,
@@ -122,6 +127,7 @@ export async function updateSubmit(data: {
       name,
       token,
       body: JSON.stringify(body),
+      rule,
     },
   });
 }

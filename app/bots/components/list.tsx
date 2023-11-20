@@ -72,6 +72,11 @@ export default function List() {
       cell: ({ row }) => <div>{row.getValue("token")}</div>,
     },
     {
+      accessorKey: "rule",
+      header: "Rule",
+      cell: ({ row }) => <div>{row.getValue("rule")}</div>,
+    },
+    {
       accessorKey: 'created',
       header: "Created",
       cell: ({ row }) => <div>{row.getValue("created")}</div>,

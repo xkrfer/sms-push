@@ -27,7 +27,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  ChannelType,
   getChannelName,
   getValidChannelTypes,
 } from "@/lib/channel/type";
@@ -36,7 +35,7 @@ import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChannelBox } from "@/lib/channel/Box";
-import { addSubmit, getBotById, updateSubmit } from "./api";
+import { getBotById, updateSubmit } from "./api";
 import { useToast } from "@/components/ui/use-toast";
 
 interface Option {
@@ -64,6 +63,7 @@ const getDefaultSchema = () => {
         required_error: "please input bot name",
       })
       .min(3, "bot name must be at least 3 characters"),
+    rule: z.string().optional(),
   });
 };
 let formSchema = getDefaultSchema();
@@ -84,17 +84,19 @@ export default function EditForm(props: {
       id,
       name: "",
       type,
+      rule: "",
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
     // @ts-ignore
-    const { id, type, name, token, ...rest } = values;
+    const { id, type, name, token, rule, ...rest } = values;
     updateSubmit({
       id,
       name,
       type,
       token,
       body: rest,
+      rule,
     })
       .then(() => {
         toast({
@@ -123,6 +125,7 @@ export default function EditForm(props: {
       form.setValue("name", res.name);
       form.setValue("type", res.type);
       form.setValue("id", res.id);
+      form.setValue("rule", res.rule || '');
       box.getOptions().forEach((opt) => {
         if (opt.name === "token") {
           // @ts-ignore
@@ -204,6 +207,19 @@ export default function EditForm(props: {
                   <FormLabel>Bot Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Input a bot name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rule"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rule</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Input a rule like ^sth" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -13,7 +13,11 @@ export async function pushMessage(data: {
   body: Record<string, any>;
 }) {
   const { sms, body } = data;
-  const { id } = sms;
+  const { id, rule } = sms;
+
+  const isHit = hitRule(rule, body.title, body.content);
+  console.log("isHit", isHit);
+  if (!isHit) return;
   // 根据id获取bots
   const bots = await prisma.botSMS.findMany({
     where: {
@@ -36,6 +40,7 @@ export async function pushMessage(data: {
       body: true,
       id: true,
       name: true,
+      rule: true,
     },
   });
   if (!botList.length) return;
@@ -50,6 +55,7 @@ function sendMessage(
     id: number;
     name: string;
     type: string;
+    rule: string | null;
   }[],
   body: Record<string, any>
 ) {
@@ -68,6 +74,16 @@ function sendMessage(
             id: bot.id,
             name: bot.name,
             message: "not support",
+          });
+          return;
+        }
+
+        const isHit = hitRule(bot.rule, body.title, body.content);
+        if (!isHit) {
+          errorList.push({
+            id: bot.id,
+            name: bot.name,
+            message: "rule not hit",
           });
           return;
         }
@@ -137,4 +153,11 @@ async function recordLog(
       },
     },
   });
+}
+
+function hitRule(reg: string | null, title: string, content: string) {
+  // 判断是不是正则
+  if (reg === null || reg === undefined || reg === "") return true;
+  const regex = new RegExp(reg);
+  return regex.test(title) || regex.test(content);
 }

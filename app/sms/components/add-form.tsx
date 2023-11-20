@@ -38,6 +38,7 @@ const getDefaultSchema = () => {
     bots: z.array(z.number()).refine((value) => value.some((item) => item), {
       message: "You have to select at least one bot.",
     }),
+    rule: z.string().optional()
   });
 };
 
@@ -63,6 +64,7 @@ export default function AddForm(props: Props) {
     defaultValues: {
       name: "",
       bots: [],
+      rule: "",
     },
   });
 
@@ -114,6 +116,19 @@ export default function AddForm(props: Props) {
                   <FormLabel>SMS Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Input a sms name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rule"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rule</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Input a rule like ^sth" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

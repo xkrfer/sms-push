@@ -25,7 +25,11 @@ export async function getBots() {
   return bots;
 }
 
-export async function addSubmit(data: { name: string; bots: number[] }) {
+export async function addSubmit(data: {
+  name: string;
+  bots: number[];
+  rule?: string;
+}) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("no login");
   // 新增一条sms记录，同时新增多条smsBot记录
@@ -41,6 +45,7 @@ export async function addSubmit(data: { name: string; bots: number[] }) {
       name: data.name,
       userId,
       token: nanoid(32),
+      rule: data.rule || "",
     },
   });
   // 更新smsBot
@@ -72,17 +77,19 @@ export async function getList() {
       token: true,
       created: true,
       updated: true,
+      rule: true,
     },
   });
 
   return smsList.map((sms) => {
-    const { id, name, token, created, updated } = sms;
+    const { id, name, token, created, updated, rule } = sms;
     return {
       id,
       name,
       token,
       created: formatDate(created),
       updated: formatDate(updated),
+      rule: rule || "",
     };
   });
 }
@@ -122,6 +129,7 @@ export async function updateSubmit(data: {
   id: number;
   name: string;
   bots: number[];
+  rule?: string;
 }) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("no login");
@@ -132,6 +140,7 @@ export async function updateSubmit(data: {
     },
     data: {
       name: data.name,
+      rule: data.rule || "",
     },
   });
   // 获取当前sms的bots

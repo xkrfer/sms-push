@@ -64,6 +64,7 @@ model Bot {
   sms     SMS[]    @relation("BotSMS")
   type    String  // 1: telegram 2: lark
   userId  String
+  rule    String?
   BotSMS  BotSMS[]
   created DateTime @default(now())
   updated DateTime @updatedAt
@@ -76,6 +77,7 @@ model SMS {
   bot    Bot[]    @relation("BotSMS")
   userId String
   BotSMS BotSMS[]
+  rule    String?
   created DateTime @default(now())
   updated DateTime @updatedAt
 }

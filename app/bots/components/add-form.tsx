@@ -63,6 +63,7 @@ const getDefaultSchema = () => {
         required_error: "please input bot name",
       })
       .min(3, "bot name must be at least 3 characters"),
+    rule: z.string().optional(),  
   });
 };
 let formSchema = getDefaultSchema();
@@ -78,6 +79,7 @@ export default function AddForm(props: { onSuccess?: () => void }) {
     defaultValues: {
       name: "",
       type: "",
+      rule: "",
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -171,6 +173,19 @@ export default function AddForm(props: { onSuccess?: () => void }) {
                   <FormLabel>Bot Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Input a bot name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rule"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rule</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Input a rule like ^sth" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

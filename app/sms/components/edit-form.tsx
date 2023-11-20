@@ -39,6 +39,7 @@ const getDefaultSchema = () => {
     bots: z.array(z.number()).refine((value) => value.some((item) => item), {
       message: "You have to select at least one bot.",
     }),
+    rule: z.string().optional(),
   });
 };
 
@@ -48,16 +49,16 @@ interface Props {
   onSuccess?: () => void;
   id: number;
   name: string;
-  Bots:  {
+  rule: string;
+  Bots: {
     id: number;
     name: string;
   }[];
 }
 
 export default function EditForm(props: Props) {
-
-  const { onSuccess, id, Bots, name } = props;
-  const [ open, setOpen] = useState(false);
+  const { onSuccess, id, Bots, name, rule } = props;
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,6 +67,7 @@ export default function EditForm(props: Props) {
       id,
       name,
       bots: [],
+      rule,
     },
   });
 
@@ -73,7 +75,7 @@ export default function EditForm(props: Props) {
     updateSubmit(values)
       .then(() => {
         setOpen(false);
-        onSuccess && onSuccess()
+        onSuccess && onSuccess();
       })
       .catch((err) => {
         toast({
@@ -84,9 +86,9 @@ export default function EditForm(props: Props) {
       });
   }
   useEffect(() => {
-    if(!open) return
+    if (!open) return;
     getBotsById(id).then((res) => {
-        form.setValue("bots", res);
+      form.setValue("bots", res);
     });
   }, [open]);
   return (
@@ -114,6 +116,19 @@ export default function EditForm(props: Props) {
                   <FormLabel>SMS Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Input a sms name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rule"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rule</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Input a rule like ^sth" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
