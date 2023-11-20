@@ -15,5 +15,5 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(date: string | number | Date) {
   // TZ为上海
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss");
+  return dayjs(date).add(8, "hour").format("YYYY-MM-DD HH:mm:ss");
 }
