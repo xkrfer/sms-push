@@ -4,6 +4,7 @@ export enum ChannelType {
   Wechat,
   Webhook,
   Lark,
+  Feishu,
 }
 
 // getChannelType
@@ -13,18 +14,25 @@ export function getChannelName(type: ChannelType) {
     case ChannelType.Telegram:
       return "Telegram";
     case ChannelType.Dingtalk:
-      return "Dingtalk";
+      return "DingTalk";
     case ChannelType.Wechat:
       return "Wechat";
     case ChannelType.Webhook:
       return "Webhook";
     case ChannelType.Lark:
       return "Lark";
+    case ChannelType.Feishu:
+      return "Feishu";
     default:
       return "Unknown";
   }
 }
 
 export function getValidChannelTypes() {
-  return [ChannelType.Telegram, ChannelType.Lark];
+  return [
+    ChannelType.Telegram,
+    ChannelType.Lark,
+    ChannelType.Feishu,
+    ChannelType.Dingtalk,
+  ];
 }

@@ -1,6 +1,8 @@
 import { Telegram } from "./Telegram";
 import { Lark } from "./Lark";
 import { ChannelType } from "./type";
+import { Feishu } from "./Feishu";
+import { Dingtalk } from "./DingTalk";
 
 export class ChannelBox {
   type?: ChannelType;
@@ -11,6 +13,12 @@ export class ChannelBox {
         break;
       case ChannelType.Lark + "":
         this.type = ChannelType.Lark;
+        break;
+      case ChannelType.Feishu + "":
+        this.type = ChannelType.Feishu;
+        break;
+      case ChannelType.Dingtalk + "":
+        this.type = ChannelType.Dingtalk;
         break;
       default:
         break;
@@ -23,6 +31,10 @@ export class ChannelBox {
         return Telegram;
       case ChannelType.Lark:
         return Lark;
+      case ChannelType.Feishu:
+        return Feishu;
+      case ChannelType.Dingtalk:
+        return Dingtalk;
       default:
         throw new Error("not ChannelBox");
     }
