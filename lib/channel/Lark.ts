@@ -1,3 +1,4 @@
+import { getText } from "../utils";
 import { BaseChannel } from "./Base";
 import { ChannelType } from "./type";
 import { z } from "zod";
@@ -79,7 +80,7 @@ export class Lark extends BaseChannel {
     const body = {
       msg_type: "text",
       content: {
-        text: `${title}\n${content}`,
+        text: `${getText(title)}\n${getText(content)}`,
       },
     };
     return fetch(url, {
