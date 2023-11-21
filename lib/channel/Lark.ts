@@ -41,28 +41,20 @@ export class Lark extends BaseChannel {
             value: "text",
           },
           {
-            label: "Post",
-            value: "post",
-          },
-          {
-            label: "Image",
-            value: "image",
-          },
-          {
-            label: "Share Chat",
-            value: "share_chat",
-          },
-          {
-            label: "Interactive",
-            value: "interactive",
+            label: "Markdown",
+            value: "markdown",
           },
         ],
       },
     ];
   }
 
+  static getHookUrl(token: string) {
+    return `https://open.larksuite.com/open-apis/bot/v2/hook/${token}`;
+  }
+
   static sendMessage(
-    token: {
+    sms: {
       body: string;
       token: string;
       id: number;
@@ -71,6 +63,63 @@ export class Lark extends BaseChannel {
     },
     data: Record<string, any>
   ) {
-    console.log("lark");
+    const { token } = sms;
+    const body = JSON.parse(sms.body);
+    const { msg_type } = body;
+    if (msg_type === "text") {
+      return this.sendTextMessage(token, data);
+    } else if (msg_type === "markdown") {
+      return this.sendMarkdownMessage(token, data);
+    }
+  }
+
+  static sendTextMessage(token: string, data: Record<string, any>) {
+    const { title, content } = data;
+    const url = this.getHookUrl(token);
+    const body = {
+      msg_type: "text",
+      content: {
+        text: `${title}\n${content}`,
+      },
+    };
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  static sendMarkdownMessage(token: string, data: Record<string, any>) {
+    const { title, content } = data;
+    const url = this.getHookUrl(token);
+    const body = {
+      msg_type: "interactive",
+      card: {
+        elements: [
+          {
+            tag: "div",
+            text: {
+              content,
+              tag: "lark_md",
+            },
+          },
+        ],
+        header: {
+          title: {
+            content: title,
+            tag: "plain_text",
+          },
+        },
+      },
+    };
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }

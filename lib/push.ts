@@ -16,7 +16,8 @@ export async function pushMessage(data: {
   const { id, rule } = sms;
 
   const isHit = hitRule(rule, body.title, body.content);
-  console.log("isHit", isHit);
+  console.log(`sms ${sms.name} hit rule ${isHit}, rule: ${rule}`);
+
   if (!isHit) return;
   // 根据id获取bots
   const bots = await prisma.botSMS.findMany({
@@ -43,6 +44,10 @@ export async function pushMessage(data: {
       rule: true,
     },
   });
+  console.log(
+    "bots",
+    botList.map((bot) => bot.name)
+  );
   if (!botList.length) return;
   const res = await sendMessage(botList, body);
   await recordLog(sms, JSON.stringify(body), res.successList, res.errorList);
@@ -87,6 +92,7 @@ function sendMessage(
           });
           return;
         }
+        console.log("bot", bot);
         return box
           .sendMessage(bot, body)
           .then(() => {

@@ -26,5 +26,5 @@ export function getChannelName(type: ChannelType) {
 }
 
 export function getValidChannelTypes() {
-  return [ChannelType.Telegram];
+  return [ChannelType.Telegram, ChannelType.Lark];
 }
