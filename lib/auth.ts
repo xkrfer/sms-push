@@ -16,6 +16,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     signIn: async ({ user, account }) => {
       if (!user) return false;
+      if (!account) return false;
       return isInWhitelist(user, account);
     },
 
