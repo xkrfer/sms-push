@@ -1,4 +1,4 @@
-import { AuthOptions } from "next-auth";
+import { Account, AuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
@@ -14,12 +14,9 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async ({ user }) => {
-      if (!user || !user.email) return false;
-      const emails = (process.env.WHITELIST_EMAILS || "").split(",");
-      const email = user.email.toLowerCase();
-      if (!emails.includes(email)) return false;
-      return true;
+    signIn: async ({ user, account }) => {
+      if (!user) return false;
+      return isInWhitelist(user, account);
     },
 
     session: async ({ session, token }) => {
@@ -39,3 +36,14 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
 };
+
+function isInWhitelist(user: any, account: Account) {
+  const email = user?.email || "";
+  const emails = (process.env.WHITELIST_EMAILS || "").split(",");
+  const userId = account.providerAccountId + "";
+  const users = (process.env.WHITELIST_USERS || "").split(",");
+  if (emails.includes(email) || users.includes(userId)) {
+    return true;
+  }
+  return false;
+}
