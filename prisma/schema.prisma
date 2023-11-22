@@ -96,7 +96,7 @@ model BotSMS {
 
 model Log {
   id      Int      @id @default(autoincrement())
-  body    String
+  body    String   @db.Text
   smsId   Int
   smsName String
   created DateTime @default(now())
@@ -110,7 +110,7 @@ model LogDetail {
   logId   Int
   botId   Int
   botName String
-  message String
+  message String   @db.Text
   status  Int
   created DateTime @default(now())
   updated DateTime @updatedAt
