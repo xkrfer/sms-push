@@ -43,6 +43,7 @@ interface Option {
   name: string;
   label: string;
   defaultValue: string;
+  placeholder?: string;
   options?: {
     value: string;
     label: string;
@@ -224,7 +225,7 @@ export default function AddForm(props: { onSuccess?: () => void }) {
                       </Select>
                     ) : (
                       <FormControl>
-                        <Input placeholder={`please input`} {...field} />
+                        <Input placeholder={ option.placeholder ? option.placeholder:  `please input`} {...field} />
                       </FormControl>
                     )}
 

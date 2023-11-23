@@ -3,8 +3,8 @@ import { BaseChannel } from "./Base";
 import { ChannelType } from "./type";
 import pushoo from "pushoo";
 
-export class Dingtalk extends BaseChannel {
-  readonly type = ChannelType.Dingtalk;
+export class Bark extends BaseChannel {
+  readonly type = ChannelType.Bark;
 
   static getSchema() {
     return z.object({
@@ -15,13 +15,7 @@ export class Dingtalk extends BaseChannel {
         .min(1, {
           message: "please input bot token",
         }),
-      msg_type: z
-        .string({
-          required_error: "please select message type",
-        })
-        .min(1, {
-          message: "please input message type",
-        }),
+      url: z.string().optional(),
     });
   }
 
@@ -33,19 +27,10 @@ export class Dingtalk extends BaseChannel {
         defaultValue: "",
       },
       {
-        name: "msg_type",
-        label: "Message Type",
-        defaultValue: "text",
-        options: [
-          {
-            label: "Text",
-            value: "text",
-          },
-          {
-            label: "Markdown",
-            value: "markdown",
-          },
-        ],
+        name: "url",
+        label: "URL",
+        placeholder: "to open when click notification",
+        defaultValue: "",
       },
     ];
   }
@@ -61,12 +46,12 @@ export class Dingtalk extends BaseChannel {
     data: Record<string, any>
   ) {
     const body = JSON.parse(sms.body);
-    return pushoo("dingtalk", {
+    return pushoo("bark", {
       token: sms.token,
       title: data.title,
       content: data.content,
       options: {
-        dingtalk: {
+        bark: {
           ...body,
         },
       },

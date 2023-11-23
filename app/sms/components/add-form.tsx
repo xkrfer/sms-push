@@ -92,6 +92,14 @@ export default function AddForm(props: Props) {
     <Dialog
       open={open}
       onOpenChange={(state) => {
+        if(state && bots.length === 0){
+          toast({
+            title: "Error",
+            description: "Please add a bot first",
+            variant: "destructive",
+          });
+          return
+        }
         form.reset();
         setOpen(state);
       }}

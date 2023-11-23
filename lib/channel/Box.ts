@@ -3,6 +3,7 @@ import { Lark } from "./Lark";
 import { ChannelType } from "./type";
 import { Feishu } from "./Feishu";
 import { Dingtalk } from "./DingTalk";
+import { Bark } from "./Bark";
 
 export class ChannelBox {
   type?: ChannelType;
@@ -20,6 +21,9 @@ export class ChannelBox {
       case ChannelType.Dingtalk + "":
         this.type = ChannelType.Dingtalk;
         break;
+      case ChannelType.Bark + "":
+        this.type = ChannelType.Bark;
+        break;
       default:
         break;
     }
@@ -35,6 +39,8 @@ export class ChannelBox {
         return Feishu;
       case ChannelType.Dingtalk:
         return Dingtalk;
+      case ChannelType.Bark:
+        return Bark;
       default:
         throw new Error("not ChannelBox");
     }

@@ -26,10 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  getChannelName,
-  getValidChannelTypes,
-} from "@/lib/channel/type";
+import { getChannelName, getValidChannelTypes } from "@/lib/channel/type";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,6 +39,7 @@ interface Option {
   name: string;
   label: string;
   defaultValue: string;
+  placeholder?: string;
   options?: {
     value: string;
     label: string;
@@ -125,7 +123,7 @@ export default function EditForm(props: {
       form.setValue("name", res.name);
       form.setValue("type", res.type);
       form.setValue("id", res.id);
-      form.setValue("rule", res.rule || '');
+      form.setValue("rule", res.rule || "");
       box.getOptions().forEach((opt) => {
         if (opt.name === "token") {
           // @ts-ignore
@@ -258,7 +256,14 @@ export default function EditForm(props: {
                       </Select>
                     ) : (
                       <FormControl>
-                        <Input placeholder={`please input`} {...field} />
+                        <Input
+                          placeholder={
+                            option.placeholder
+                              ? option.placeholder
+                              : `please input`
+                          }
+                          {...field}
+                        />
                       </FormControl>
                     )}
 

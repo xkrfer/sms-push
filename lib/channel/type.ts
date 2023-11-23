@@ -5,6 +5,7 @@ export enum ChannelType {
   Webhook,
   Lark,
   Feishu,
+  Bark,
 }
 
 // getChannelType
@@ -23,6 +24,8 @@ export function getChannelName(type: ChannelType) {
       return "Lark";
     case ChannelType.Feishu:
       return "Feishu";
+    case ChannelType.Bark:
+      return "Bark";
     default:
       return "Unknown";
   }
@@ -34,5 +37,6 @@ export function getValidChannelTypes() {
     ChannelType.Lark,
     ChannelType.Feishu,
     ChannelType.Dingtalk,
+    ChannelType.Bark,
   ];
 }
