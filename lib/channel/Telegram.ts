@@ -51,6 +51,8 @@ export class Telegram extends BaseChannel {
   ) {
     const body = JSON.parse(sms.body);
     const token = `${sms.token}#${body.chat_id}`;
+    console.log("telegram body", body);
+
     return pushoo("telegram", {
       token,
       title: data.title,

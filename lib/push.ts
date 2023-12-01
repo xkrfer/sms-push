@@ -92,7 +92,7 @@ function sendMessage(
           });
           return;
         }
-        console.log("bot", bot);
+        console.log("bot", bot, body);
         return box
           .sendMessage(bot, body)
           .then(() => {
