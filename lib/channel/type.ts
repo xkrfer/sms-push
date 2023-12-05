@@ -6,6 +6,7 @@ export enum ChannelType {
   Lark,
   Feishu,
   Bark,
+  Wecom,
 }
 
 // getChannelType
@@ -26,6 +27,8 @@ export function getChannelName(type: ChannelType) {
       return "Feishu";
     case ChannelType.Bark:
       return "Bark";
+    case ChannelType.Wecom:
+      return "Wecom";
     default:
       return "Unknown";
   }
@@ -38,5 +41,6 @@ export function getValidChannelTypes() {
     ChannelType.Feishu,
     ChannelType.Dingtalk,
     ChannelType.Bark,
+    ChannelType.Wecom,
   ];
 }

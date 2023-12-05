@@ -4,6 +4,7 @@ import { ChannelType } from "./type";
 import { Feishu } from "./Feishu";
 import { Dingtalk } from "./DingTalk";
 import { Bark } from "./Bark";
+import { Wecom } from "./Wecom";
 
 export class ChannelBox {
   type?: ChannelType;
@@ -24,6 +25,9 @@ export class ChannelBox {
       case ChannelType.Bark + "":
         this.type = ChannelType.Bark;
         break;
+      case ChannelType.Wecom + "":
+        this.type = ChannelType.Wecom;
+        break;
       default:
         break;
     }
@@ -41,6 +45,8 @@ export class ChannelBox {
         return Dingtalk;
       case ChannelType.Bark:
         return Bark;
+      case ChannelType.Wecom:
+        return Wecom;
       default:
         throw new Error("not ChannelBox");
     }
